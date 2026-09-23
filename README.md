@@ -12,11 +12,12 @@ A local visual workspace for drafting app and website screens before implementat
 - Write a guided brief covering goal, audience, layout, and content.
 - Edit text, position, size, color, and corners on a draggable canvas. Add element comments and use undo/redo for focused changes.
 - Switch between mobile and desktop canvas sizes.
+- Fit the selected canvas inside the editor while keeping its original export dimensions; dragging stays accurate at reduced zoom.
 - Save named versions and restore the latest version.
 - Review and export the **latest saved version** of every screen as `design.json`, `preview.html`, and `IMPLEMENT.md`.
 - Copy an implementation prompt into a Codex task or another coding assistant.
 
-Templates are editable starting layouts. Animation creates storyboard frames, and 3D object creates concept views; the canvas does not render motion or 3D models. This release does not generate designs from prompts, connect to live app data, or automatically message a Codex task. Desktop mode changes the selected screen's canvas size; it does not automatically rearrange elements. Existing designs open with their original visual properties, while new elements can use shared styles.
+Templates are editable starting layouts. Animation creates storyboard frames, and 3D object creates concept views; the canvas does not render motion or 3D models. Template projects retain their intended canvas size, and newly added screens inherit that size. The fit percentage shown below the canvas affects only the editor view, not the saved design or export. This release does not generate designs from prompts, connect to live app data, or automatically message a Codex task. On blank and legacy projects, switching between mobile and desktop changes the selected screen's canvas size; it does not automatically rearrange elements. Existing designs open with their original visual properties, while new elements can use shared styles.
 
 ## Requirements
 
