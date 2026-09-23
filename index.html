@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Open Design Studio</title><link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark">✳</span><div><strong>Open</strong><small>DESIGN STUDIO</small></div></div>
+      <div class="side-label">YOUR DESIGNS</div>
+      <button id="newProject" class="new-project">＋ New design</button>
+      <div id="projectList" class="project-list"></div>
+      <div class="sidebar-bottom"><span class="status-dot"></span> Saved locally on this computer</div>
+    </aside>
+    <main class="main">
+      <header class="topbar"><div><span class="breadcrumb">Workspace / </span><input id="projectName" aria-label="Design name" maxlength="80"><span id="saveState" class="save-state">Saved</span></div><div class="top-actions"><button id="saveVersion" class="subtle">Save version</button><button id="handoff" class="primary">Send to implementation ↗</button></div></header>
+      <section class="workspace">
+        <div class="worktop"><div><span class="eyebrow">DESIGN CANVAS</span><h1 id="canvasTitle">Make the idea visible.</h1></div><div class="device-tabs"><button data-device="mobile" class="active">Mobile</button><button data-device="desktop">Desktop</button></div></div>
+        <div class="studio-grid">
+          <section class="center"><div class="canvas-toolbar"><span>Canvas</span><div><button id="addText">＋ Text</button><button id="addButton">＋ Button</button><button id="addBox">＋ Block</button></div></div><div class="stage"><div id="canvas" class="canvas"></div></div><div class="canvas-foot"><span id="dimensions">390 × 844</span><span>Drag elements to arrange · Click to edit</span></div></section>
+          <aside class="inspector"><div class="panel-head"><span class="eyebrow">DESIGN NOTES</span><h2>Shape the experience</h2></div><label class="field">What is this design for?<textarea id="brief" rows="4" placeholder="Describe the audience and the screen's purpose..."></textarea></label><div class="divider"></div><div id="elementFields"><div class="empty-inspector">Select an element on the canvas to edit its content and appearance.</div></div><div class="divider"></div><div class="versions-head"><span>Versions</span><button id="restoreLatest" title="Restore latest version">↶ Restore</button></div><div id="versions" class="versions"></div></aside>
+        </div>
+      </section>
+    </main>
+  </div>
+  <dialog id="handoffDialog"><form method="dialog"><button class="close" aria-label="Close">×</button></form><div class="dialog-icon">↗</div><h2>Ready for implementation</h2><p>The approved design package is saved locally. Open your implementation task in Codex and paste this prompt.</p><div class="handoff-location" id="handoffLocation"></div><textarea id="handoffPrompt" readonly rows="4"></textarea><div class="dialog-actions"><button id="copyPrompt" class="primary">Copy prompt</button><button id="openFolder" class="subtle">Open folder</button></div></dialog>
+  <div id="toast" role="status"></div>
+  <script type="module" src="app.js"></script>
+</body></html>
