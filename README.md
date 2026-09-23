@@ -6,13 +6,16 @@ A local visual workspace for drafting app and website screens before implementat
 
 ## Features
 
-- Create multiple designs and edit text, position, size, color, and corners on a draggable canvas.
+- Create multiple projects and screens. Duplicate a screen to keep layouts consistent.
+- Define project-wide colors, typography, spacing, and corners. New elements use shared styles, and linked elements update when the system changes.
+- Write a guided brief covering goal, audience, layout, and content.
+- Edit text, position, size, color, and corners on a draggable canvas. Add element comments and use undo/redo for focused changes.
 - Switch between mobile and desktop canvas sizes.
 - Save named versions and restore the latest version.
-- Export the **latest saved version** as `design.json`, `preview.html`, and `IMPLEMENT.md`.
+- Review and export the **latest saved version** of every screen as `design.json`, `preview.html`, and `IMPLEMENT.md`.
 - Copy an implementation prompt into a Codex task or another coding assistant.
 
-This release is a **single-screen design tool**. It does not generate designs from prompts, connect to live app data, or automatically message a Codex task. Desktop mode changes the canvas size; it does not automatically rearrange elements.
+This release does not generate designs from prompts, connect to live app data, or automatically message a Codex task. Desktop mode changes the selected screen's canvas size; it does not automatically rearrange elements. Existing designs open with their original visual properties, while new elements can use shared styles.
 
 ## Requirements
 
@@ -40,11 +43,12 @@ The server listens on `127.0.0.1` only. It is intended for personal local use; i
 
 ## Design and handoff workflow
 
-1. Press **New design** and describe the screen in **Design notes**.
-2. Add text, buttons, or blocks. Drag an element on the canvas, then use the inspector for precise edits.
-3. Press **Save version** when a design is ready for implementation.
-4. Press **Send to implementation**. The package appears in `handoffs/<design-name>-<id>/`.
-5. Copy the generated prompt into your Codex implementation task. The task can read the package files from the same computer.
+1. Press **New design** and fill in the **Brief** tab.
+2. Set colors, type, spacing, and corners in the **System** tab.
+3. Add screens. Add text, buttons, or blocks; drag elements and use **Edit** for precise changes and element comments.
+4. Press **Save version** when the whole project is ready.
+5. Press **Send to implementation**, then **Review export** to inspect the exact approved version. The package appears in `handoffs/<design-name>-<id>/`.
+6. Copy the generated prompt into your Codex implementation task. The task can read the package files from the same computer.
 
 Only the latest saved version is exported. Later draft changes stay in the studio until you save another version. The preview is a static layout reference, not a functioning app.
 

@@ -15,6 +15,7 @@ const getPort = () => new Promise((resolve, reject) => {
 test('exports the saved version, not later draft edits', async t => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'open-design-studio-'));
   fs.copyFileSync(path.join(root, 'server.js'), path.join(dir, 'server.js'));
+  fs.copyFileSync(path.join(root, 'model.js'), path.join(dir, 'model.js'));
   fs.writeFileSync(path.join(dir, 'package.json'), '{"type":"module"}');
   const port = await getPort();
   const child = spawn(process.execPath, ['server.js'], { cwd: dir, env: { ...process.env, PORT: String(port) }, stdio: 'ignore' });
@@ -36,4 +37,17 @@ test('exports the saved version, not later draft edits', async t => {
   assert.equal(design.brief, 'Approved brief');
   assert.match(fs.readFileSync(path.join(folder, 'IMPLEMENT.md'), 'utf8'), /Approved design version: Approved/);
   assert.ok(fs.existsSync(path.join(folder, 'preview.html')));
+
+  created.briefFields = {goal:'Plan the work',audience:'Designers',layout:'Two screens',content:'Home and settings'};
+  created.designSystem.colors.primary = '#123456';
+  created.screens.push({id:crypto.randomUUID(),name:'Settings',width:390,height:844,backgroundToken:'canvas',elements:[{id:crypto.randomUUID(),type:'button',x:20,y:40,w:180,h:50,text:'Save',fontSize:16,colorToken:'surface',backgroundToken:'primary',radius:12}],comments:[]});
+  created.versions.push({label:'Two screens',at:new Date().toISOString(),snapshot:{designSystem:structuredClone(created.designSystem),briefFields:structuredClone(created.briefFields),screens:structuredClone(created.screens),activeScreenId:created.activeScreenId}});
+  created.screens[1].elements[0].text = 'Unapproved label';
+  assert.equal((await fetch(base + '/api/projects/' + created.id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(created)})).status,200);
+  const second = await (await fetch(base + '/api/projects/' + created.id + '/handoff',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'})).json();
+  const exported = JSON.parse(fs.readFileSync(path.join(second.folder,'design.json'),'utf8'));
+  assert.equal(exported.screens.length,2);
+  assert.equal(exported.screens[1].elements[0].text,'Save');
+  assert.equal(exported.designSystem.colors.primary,'#123456');
+  assert.match(fs.readFileSync(path.join(second.folder,'preview.html'),'utf8'),/Settings/);
 });
