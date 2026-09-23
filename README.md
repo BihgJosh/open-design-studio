@@ -24,6 +24,7 @@ This release is a **single-screen design tool**. It does not generate designs fr
 Clone this repository, then run:
 
 ```sh
+git clone https://github.com/BihgJosh/open-design-studio.git
 cd open-design-studio
 npm start
 ```
