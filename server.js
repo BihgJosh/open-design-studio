@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { normalizeProject, approvedProject, colorFor, sizeFor, radiusFor } from './model.js';
+import { templates, createTemplateProject } from './templates.js';
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const dataDir = path.join(root, 'data');
@@ -48,6 +49,7 @@ const server = http.createServer(async (req, res) => {
     const u = new URL(req.url, 'http://localhost');
     if (u.pathname.startsWith('/api/')) {
       if (req.method === 'GET' && u.pathname === '/api/projects') return send(res, 200, readProjects());
+      if (req.method === 'GET' && u.pathname === '/api/templates') return send(res, 200, templates);
       if (req.method === 'GET' && u.pathname.match(/^\/api\/projects\/[^/]+\/preview$/)) {
         const id=u.pathname.split('/')[3]; const p=readProjects().find(x=>x.id===id); if(!p) return send(res,404,{error:'Design not found'});
         const version=p.versions.at(-1); if(!version) return send(res,400,{error:'Save a version before preview'});
@@ -55,7 +57,7 @@ const server = http.createServer(async (req, res) => {
       }
       let raw = ''; for await (const chunk of req) { raw += chunk; if (raw.length > 2_000_000) throw Error('Request is too large'); }
       const body = raw ? JSON.parse(raw) : {};
-      if (req.method === 'POST' && u.pathname === '/api/projects') { const p = defaultProject(); const all = readProjects(); all.unshift(p); saveProjects(all); return send(res, 201, p); }
+      if (req.method === 'POST' && u.pathname === '/api/projects') { const p = body.templateId ? createTemplateProject(body.templateId) : defaultProject(); const all = readProjects(); all.unshift(p); saveProjects(all); return send(res, 201, p); }
       if (req.method === 'PUT' && u.pathname.startsWith('/api/projects/')) {
         const id = u.pathname.split('/')[3]; const all = readProjects(); const index = all.findIndex(p => p.id === id); if (index < 0) return send(res, 404, {error:'Design not found'});
         const p = validateProject(body); if (p.id !== id) throw Error('Design ID mismatch'); p.updatedAt = new Date().toISOString(); all[index] = p; saveProjects(all); return send(res, 200, p);

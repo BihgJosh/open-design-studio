@@ -7,6 +7,7 @@ A local visual workspace for drafting app and website screens before implementat
 ## Features
 
 - Create multiple projects and screens. Duplicate a screen to keep layouts consistent.
+- Start from 12 editable templates: Blank, Mobile app design, Slides, Document, Wireframe, Animation, UI mockups, Résumé, 3D object, Research, HTML email, and Color + type pairing.
 - Define project-wide colors, typography, spacing, and corners. New elements use shared styles, and linked elements update when the system changes.
 - Write a guided brief covering goal, audience, layout, and content.
 - Edit text, position, size, color, and corners on a draggable canvas. Add element comments and use undo/redo for focused changes.
@@ -15,7 +16,7 @@ A local visual workspace for drafting app and website screens before implementat
 - Review and export the **latest saved version** of every screen as `design.json`, `preview.html`, and `IMPLEMENT.md`.
 - Copy an implementation prompt into a Codex task or another coding assistant.
 
-This release does not generate designs from prompts, connect to live app data, or automatically message a Codex task. Desktop mode changes the selected screen's canvas size; it does not automatically rearrange elements. Existing designs open with their original visual properties, while new elements can use shared styles.
+Templates are editable starting layouts. Animation creates storyboard frames, and 3D object creates concept views; the canvas does not render motion or 3D models. This release does not generate designs from prompts, connect to live app data, or automatically message a Codex task. Desktop mode changes the selected screen's canvas size; it does not automatically rearrange elements. Existing designs open with their original visual properties, while new elements can use shared styles.
 
 ## Requirements
 
@@ -43,7 +44,7 @@ The server listens on `127.0.0.1` only. It is intended for personal local use; i
 
 ## Design and handoff workflow
 
-1. Press **New design** and fill in the **Brief** tab.
+1. Press **New design**, choose a template, and fill in the **Brief** tab.
 2. Set colors, type, spacing, and corners in the **System** tab.
 3. Add screens. Add text, buttons, or blocks; drag elements and use **Edit** for precise changes and element comments.
 4. Press **Save version** when the whole project is ready.

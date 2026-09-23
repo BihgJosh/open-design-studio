@@ -16,6 +16,7 @@ test('exports the saved version, not later draft edits', async t => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'open-design-studio-'));
   fs.copyFileSync(path.join(root, 'server.js'), path.join(dir, 'server.js'));
   fs.copyFileSync(path.join(root, 'model.js'), path.join(dir, 'model.js'));
+  fs.copyFileSync(path.join(root, 'templates.js'), path.join(dir, 'templates.js'));
   fs.writeFileSync(path.join(dir, 'package.json'), '{"type":"module"}');
   const port = await getPort();
   const child = spawn(process.execPath, ['server.js'], { cwd: dir, env: { ...process.env, PORT: String(port) }, stdio: 'ignore' });
@@ -50,4 +51,16 @@ test('exports the saved version, not later draft edits', async t => {
   assert.equal(exported.screens[1].elements[0].text,'Save');
   assert.equal(exported.designSystem.colors.primary,'#123456');
   assert.match(fs.readFileSync(path.join(second.folder,'preview.html'),'utf8'),/Settings/);
+
+  const catalog = await (await fetch(base + '/api/templates')).json();
+  assert.equal(catalog.length, 12);
+  for (const template of catalog) {
+    const response = await fetch(base + '/api/projects', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({templateId:template.id})});
+    assert.equal(response.status, 201, template.id);
+    const project = await response.json();
+    assert.equal(project.templateId, template.id);
+    assert.ok(project.screens.length >= 1);
+    assert.ok(project.screens.every(screen => screen.elements.length > 0 || template.id === 'blank'));
+  }
+  assert.equal((await fetch(base + '/api/projects',{method:'POST',headers:{'Content-Type':'application/json'},body:'{"templateId":"unknown"}'})).status,400);
 });
